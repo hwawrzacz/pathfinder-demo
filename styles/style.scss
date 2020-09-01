@@ -1,0 +1,61 @@
+// GENERAL
+body {
+
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+// TEST 
+.test {
+    position: fixed;
+    top: 0;
+    right: 0;
+
+    width: 200px;
+
+    border: 1px solid black;
+    
+    section {
+        min-height: 50px;
+        &:not(:last-child) {
+           border-bottom: 1px solid black;
+        }
+    }
+}
+
+// MESH
+table.mesh {
+    border-spacing: 0;
+}
+
+.mesh__row {
+    display: flex;
+}
+
+.mesh__element {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(black, .87);
+    background-color: transparent;
+    border-radius: 6px;
+    font-size: 10px;
+    cursor: pointer;
+        
+    &.selected {
+        background: rgb(31,224,205);
+        background: linear-gradient(45deg, rgb(31, 179, 224) 0%, rgba(0,212,255,1) 100%);
+    }
+
+    &:not(.selected):hover {
+        background-color: rgba(black, .15);
+    }        
+}
