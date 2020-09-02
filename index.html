@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="./styles/controls.css">
+    <link rel="stylesheet" href="./styles/mesh.css">
     <link rel="stylesheet" href="./styles/dialog.css">
     <title>Mesh example</title>
 </head>
@@ -20,6 +22,32 @@
         </header>
 
         <main>
+            <nav class="tile-controls">
+                <div class="tile-controls__option-wrapper">
+                    <label>
+                        <input type="radio" name="target" id="target--entry" />
+                        <span>Wejście</span>
+                    </label>
+                </div>
+                <div class="tile-controls__option-wrapper">
+                    <label>
+                        <input type="radio" name="target" id="target--shelf" />
+                        <span>Półka</span>
+                    </label>
+                </div>
+                <div class="tile-controls__option-wrapper">
+                    <label>
+                        <input type="radio" name="target" id="target--register" />
+                        <span>Kasa</span>
+                    </label>
+                </div>
+                <div class="tile-controls__option-wrapper">
+                    <label>
+                        <input type="radio" name="target" id="target--exit" />
+                        <span>Wyjście</span>
+                    </label>
+                </div>
+            </nav>
             <div class="mesh__container">
                 <table class="mesh"></table>
             </div>

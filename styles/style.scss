@@ -9,17 +9,28 @@
 // TEST 
 .test {
     position: fixed;
-    top: 0;
-    right: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
 
-    width: 200px;
+    display: flex;
+    justify-content: space-around;
+
+    height: 50px;
+    width: 300px;
 
     border: 1px solid black;
     
     section {
-        min-height: 50px;
         &:not(:last-child) {
-           border-bottom: 1px solid black;
+           border-left: 1px solid black;
         }
     }
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
