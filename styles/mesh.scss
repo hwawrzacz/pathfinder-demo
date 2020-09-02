@@ -1,0 +1,32 @@
+// MESH
+table.mesh {
+    border-spacing: 0;
+}
+
+.mesh__row {
+    display: flex;
+}
+
+.mesh__element {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(black, .87);
+    background-color: transparent;
+    border-radius: 6px;
+    font-size: 10px;
+    cursor: pointer;
+        
+    &.selected {
+        background: rgb(31,224,205);
+        background: linear-gradient(45deg, rgb(31, 179, 224) 0%, rgba(0,212,255,1) 100%);
+    }
+
+    &:not(.selected):hover {
+        background-color: rgba(black, .15);
+    }        
+}

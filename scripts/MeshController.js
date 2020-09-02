@@ -5,6 +5,12 @@ class MeshController {
         this.addClickListener();
         this.addDragListener();
         this.changedByLastDrag = [];
+        this.shelfDialog = new ShelfDialog();
+
+        // Add listeners
+        this.shelfDialog.on('close', (value) => {
+            console.log(value);
+        });
 
         // Test fields
         this.eventsTest = document.querySelector('.test__event');
@@ -27,27 +33,27 @@ class MeshController {
             e.preventDefault();
             e.stopPropagation();
 
-            this.mesh.element.addEventListener('mousemove', this.handleDragEvent);
-            document.addEventListener('mouseup', this.stopDragging);
+            this.mesh.element.addEventListener('mousemove', this.startShelvesSelection);
+            document.addEventListener('mouseup', this.stopShelvesSelection);
 
             this.printEventTest('mousedown');
         });
     }
 
-    handleDragEvent = (e) => {
+    startShelvesSelection = (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        this.startDragSelection(e);
+        this.selectTiles(e);
         this.printEventTest('drag');
     };
 
-    stopDragging = () => {
-        this.discardDragEvent();
-        ShelfDialog.open('Details', 'Pick a category for this shelf');
+    stopShelvesSelection = () => {
+        this.removeDragListener();
+        this.shelfDialog.open('Details', 'Pick a category for this shelf. The color is already defined.');
     }
 
-    startDragSelection(mouseEvent) {
+    selectTiles(mouseEvent) {
         const relCursorPosition = this.getRelCursorPosition(mouseEvent);
 
         this.toggleTile(relCursorPosition);
@@ -68,9 +74,10 @@ class MeshController {
         }
     }
 
-    discardDragEvent = () => {
-        document.removeEventListener('mouseup', this.stopDragging);
-        this.mesh.element.removeEventListener('mousemove', this.handleDragEvent);
+    removeDragListener = () => {
+        document.removeEventListener('mouseup', this.stopShelvesSelection);
+        this.mesh.element.removeEventListener('mousemove', this.startShelvesSelection);
+
         this.changedByLastDrag.forEach(element => {
             element.classList.remove('just-changed');
         });
