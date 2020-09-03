@@ -25,25 +25,25 @@
             <nav class="tile-controls">
                 <div class="tile-controls__option-wrapper">
                     <label>
-                        <input type="radio" name="target" id="target--entry" />
+                        <input type="radio" name="target" id="target--entry" value="entry" checked />
                         <span>Wejście</span>
                     </label>
                 </div>
                 <div class="tile-controls__option-wrapper">
                     <label>
-                        <input type="radio" name="target" id="target--shelf" />
+                        <input type="radio" name="target" id="target--shelf" value="shelf" />
                         <span>Półka</span>
                     </label>
                 </div>
                 <div class="tile-controls__option-wrapper">
                     <label>
-                        <input type="radio" name="target" id="target--register" />
+                        <input type="radio" name="target" id="target--register" value="register" />
                         <span>Kasa</span>
                     </label>
                 </div>
                 <div class="tile-controls__option-wrapper">
                     <label>
-                        <input type="radio" name="target" id="target--exit" />
+                        <input type="radio" name="target" id="target--exit" value="exit" />
                         <span>Wyjście</span>
                     </label>
                 </div>
@@ -62,7 +62,9 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/EventEmitter/5.2.8/EventEmitter.js"></script>
+    <script src="./scripts/enums/enums.js"></script>
     <script src="./scripts/dialogs/ShelfDialog.js"></script>
+    <script src="./scripts/TileTypeController.js"></script>
     <script src="./scripts/MeshController.js"></script>
     <script src="./scripts/Mesh.js"></script>
     <script src="./scripts/index.js"></script>

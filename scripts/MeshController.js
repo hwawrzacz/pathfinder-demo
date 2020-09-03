@@ -5,12 +5,17 @@ class MeshController {
         this.addClickListener();
         this.addDragListener();
         this.changedByLastDrag = [];
+        this.tileType = TileType.entry;
         this.shelfDialog = new ShelfDialog();
+        this.shelfTypeController = new TileTypeController();
 
         // Add listeners
         this.shelfDialog.on('close', (value) => {
             console.log(value);
         });
+        this.shelfTypeController.on(TileTypeControllerEvents.changed, (value) => {
+            console.log(`New current type: ${value}`);
+        })
 
         // Test fields
         this.eventsTest = document.querySelector('.test__event');
@@ -20,18 +25,21 @@ class MeshController {
     }
 
     addClickListener() {
-        this.mesh.element.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
+        this.mesh.element.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const relCursorPosition = this.getRelCursorPosition(event);
+            this.toggleTile(relCursorPosition);
 
             this.printEventTest('clicked');
         });
     }
 
     addDragListener() {
-        this.mesh.element.addEventListener('mousedown', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
+        this.mesh.element.addEventListener('mousedown', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
 
             this.mesh.element.addEventListener('mousemove', this.startShelvesSelection);
             document.addEventListener('mouseup', this.stopShelvesSelection);
@@ -40,11 +48,11 @@ class MeshController {
         });
     }
 
-    startShelvesSelection = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+    startShelvesSelection = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
 
-        this.selectTiles(e);
+        this.selectTiles(event);
         this.printEventTest('drag');
     };
 
