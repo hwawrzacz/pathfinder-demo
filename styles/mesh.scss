@@ -29,6 +29,22 @@ table.mesh {
         background: linear-gradient(45deg, rgb(31, 179, 224) 0%, rgba(0,212,255,1) 100%);
     }
 
+    &.entry {
+        @include tile-gradient(limegreen);
+    }
+
+    &.shelf {
+        @include tile-gradient(rgb(0, 183, 255));
+    }
+
+    &.register {
+        @include tile-gradient(purple);
+    }
+
+    &.exit {
+        @include tile-gradient(darkred);
+    }
+
     &:not(.selected):hover {
         background-color: rgba(black, .15);
     }        
