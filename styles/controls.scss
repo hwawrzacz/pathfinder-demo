@@ -1,3 +1,13 @@
+// Variables
+@mixin tile-active-color($color) {
+    $lighter-color: lighten($color, 10%);
+    $darker-color: darken($color, 10%);
+    $bg-gradient: linear-gradient(45deg, $darker-color 0%, $lighter-color 100%);
+    box-shadow: 0 0 10px 2px $color;
+    background-color: $color;
+    background: $bg-gradient;
+}
+
 // Target controls
 .tile-controls {
     width: 100%;
@@ -12,6 +22,50 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+
+            // Default tile appearaance
+            .tile-controls__input--custom {
+                display: block;
+                width: 30px;
+                height: 30px;
+                margin-bottom: 4px;
+                order: 0;
+
+                border-radius: 4px;
+                transition: 100ms;
+                
+                &.entry {
+                    @include tile-active-color(limegreen);
+                }
+
+                &.shelf {
+                    @include tile-active-color(rgb(0, 183, 255));
+                }
+
+                &.register {
+                    @include tile-active-color(purple);
+                }
+
+                &.exit {
+                    @include tile-active-color(darkred);
+                }
+            }
+            
+            input[type="radio"] {
+                display: none;
+            }
+
+            input[type="radio"]:not(:checked) + .tile-controls__input--custom {
+                box-shadow: 0 0 0 0 transparent;
+                filter: saturate(0.8);
+                opacity: .3;
+            }
+
+            input[type="radio"]:checked + .tile-controls__input--custom {
+                transform: scale(1.05);
+                filter: saturate(1);
+            }
         }
     }
 }
