@@ -1,11 +1,10 @@
+@import 'variables';
+@import 'mixins';
+
 // Variables
 @mixin tile-active-color($color) {
-    $lighter-color: lighten($color, 10%);
-    $darker-color: darken($color, 10%);
-    $bg-gradient: linear-gradient(45deg, $darker-color 0%, $lighter-color 100%);
+    @include tile-gradient($color);
     box-shadow: 0 0 10px 2px $color;
-    background-color: $color;
-    background: $bg-gradient;
 }
 
 // Target controls
@@ -32,7 +31,7 @@
                 margin-bottom: 4px;
                 order: 0;
 
-                border-radius: 4px;
+                border-radius: $border-radius;
                 transition: 100ms;
                 
                 &.entry {

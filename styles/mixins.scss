@@ -1,0 +1,8 @@
+// Tiles
+@mixin tile-gradient($color) {
+    $lighter-color: lighten($color, 10%);
+    $darker-color: darken($color, 10%);
+    $bg-gradient: linear-gradient(45deg, $darker-color 0%, $lighter-color 100%);
+    background-color: $color;
+    background: $bg-gradient;
+}
