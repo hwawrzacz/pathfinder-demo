@@ -4,14 +4,17 @@ class MeshController {
         this.mesh = mesh;
         this.changedByLastDrag = [];
         this.tileType = TileType.entry;
+        this.selectionMode = TileSelectionMode.draw;
         this.shelfDialog = new ShelfDialog();
         this.tileTypeController = new TileTypeController();
+        this.selectionModeController = new SelectionModeController();
         this.mouseEventParser = new MouseEventParser(mesh);
 
         // Add listeners
         this.addDragListener();
         this.addShelveAdditionDialogListener();
         this.addTileTypeChangeListener();
+        this.addTileSelectionModeChangeListener();
 
         // Test fields
         this.eventsTest = document.querySelector('.test__event');
@@ -27,8 +30,15 @@ class MeshController {
     }
 
     addTileTypeChangeListener() {
-        this.tileTypeController.on(TileTypeControllerEvents.changed, (value) => {
+        this.tileTypeController.on(ControllerEvents.typeChanged, (value) => {
             this.tileType = value;
+        });
+    }
+
+    addTileSelectionModeChangeListener() {
+        this.selectionModeController.on(ControllerEvents.selectionModeChanged, (value) => {
+            console.log(`selection mode: ${value}`);
+            this.selectionMode = value;
         });
     }
 

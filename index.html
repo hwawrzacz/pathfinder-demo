@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/common.css">
     <link rel="stylesheet" href="./styles/style.css">
-    <link rel="stylesheet" href="./styles/controls.css">
-    <link rel="stylesheet" href="./styles/mesh.css">
     <link rel="stylesheet" href="./styles/dialog.css">
     <title>Mesh example</title>
 </head>
@@ -25,35 +23,44 @@
         </header>
 
         <main>
-            <nav class="tile-controls">
-                <div class="tile-controls__option-wrapper">
+            <nav class="mesh-controls">
+                <div class="mesh-controls__tile-type-wrapper">
                     <label>
-                        <input type="radio" name="target" id="target--entry" value="entry" checked />
-                        <span class="tile-controls__input--custom entry"></span>
-                        <span class="tile-controls__text">Wejście</span>
+                        <input type="radio" name="target" value="entry" checked />
+                        <div class="mesh-controls__tile-type__input--custom entry"></div>
+                        <span class="mesh-controls__text">Wejście</span>
                     </label>
                 </div>
-                <div class="tile-controls__option-wrapper">
+                <div class="mesh-controls__tile-type-wrapper">
                     <label>
-                        <input type="radio" name="target" id="target--shelf" value="shelf" />
-                        <span class="tile-controls__input--custom shelf"></span>
-                        <span class="tile-controls__text">Półka</span>
+                        <input type="radio" name="target" value="shelf" />
+                        <div class="mesh-controls__tile-type__input--custom shelf"></div>
+                        <span class="mesh-controls__text">Półka</span>
                     </label>
                 </div>
-                <div class="tile-controls__option-wrapper">
+                <div class="mesh-controls__tile-type-wrapper">
                     <label>
-                        <input type="radio" name="target" id="target--register" value="register" />
-                        <span class="tile-controls__input--custom register"></span>
-                        <span class="tile-controls__text">Kasa</span>
+                        <input type="radio" name="target" value="register" />
+                        <div class="mesh-controls__tile-type__input--custom register"></div>
+                        <span class="mesh-controls__text">Kasa</span>
                     </label>
                 </div>
-                <div class="tile-controls__option-wrapper">
+                <div class="mesh-controls__tile-type-wrapper">
                     <label>
-                        <input type="radio" name="target" id="target--exit" value="exit" />
-                        <span class="tile-controls__input--custom exit"></span>
-                        <span class="tile-controls__text">Wyjście</span>
+                        <input type="radio" name="target" value="exit" />
+                        <div class="mesh-controls__tile-type__input--custom exit"></div>
+                        <span class="mesh-controls__text">Wyjście</span>
                     </label>
                 </div>
+                <div class="mesh-controls__selection-mode-wrapper">
+                    <label>
+                        <input type="radio" name="selection-mode" value="draw" checked />
+                        <span class="mesh-controls__text">Rysowanie</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="selection-mode" value="erase" />
+                        <span class="mesh-controls__text">Wymazywanie</span>
+                    </label>
             </nav>
             <div class="mesh__container">
                 <table class="mesh"></table>
@@ -71,6 +78,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/EventEmitter/5.2.8/EventEmitter.js"></script>
     <script src="./scripts/enums/enums.js"></script>
     <script src="./scripts/dialogs/ShelfDialog.js"></script>
+    <script src="./scripts/navigation/SelectionModeController.js"></script>
     <script src="./scripts/navigation/MouseEventParser.js"></script>
     <script src="./scripts/navigation/TileTypeController.js"></script>
     <script src="./scripts/navigation/MeshController.js"></script>

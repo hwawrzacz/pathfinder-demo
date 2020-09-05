@@ -5,7 +5,14 @@ const TileType = Object.freeze({
     'exit': 4,
 });
 
-const TileTypeControllerEvents = Object.freeze({
-    'changed': 1
+const TileSelectionMode = Object.freeze({
+    'draw': 1,
+    'erase': 2
+});
+
+
+const ControllerEvents = Object.freeze({
+    'typeChanged': 1,
+    'selectionModeChanged': 2
 });
 

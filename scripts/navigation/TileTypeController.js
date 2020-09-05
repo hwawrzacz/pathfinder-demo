@@ -8,11 +8,11 @@ class TileTypeController extends EventEmitter {
     }
 
     initializeElements() {
-        this.element = document.querySelector('tile-controls');
+        this.element = document.querySelector('mesh-controls');
     }
 
     addListeners() {
-        document.querySelectorAll('input[type="radio"]').forEach((input) => {
+        document.querySelectorAll('input[type="radio"][name="target"]').forEach((input) => {
             input.addEventListener('change', (event) => this.refreshTileType(event));
         })
     }
@@ -24,7 +24,7 @@ class TileTypeController extends EventEmitter {
     }
 
     emitTypeChange() {
-        this.emit(TileTypeControllerEvents.changed, this.tileType);
+        this.emit(ControllerEvents.typeChanged, this.tileType);
     }
 }
 
