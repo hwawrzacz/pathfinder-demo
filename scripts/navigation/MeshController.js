@@ -10,7 +10,7 @@ class MeshController {
 
         // Add listeners
         this.addDragListener();
-        this.addDialogListener();
+        this.addShelveAdditionDialogListener();
         this.addTileTypeChangeListener();
 
         // Test fields
@@ -20,22 +20,9 @@ class MeshController {
         this.meshHoverTest = document.querySelector('.test__mesh-hover');
     }
 
-    addDialogListener() {
-        this.shelfDialog.on('close', (value) => {
-            const className = this.getClassNameForTileType(this.tileType)
-            const changedByLastDrag = mesh.element.querySelectorAll('.just-changed');
-
-            if (value) {
-                changedByLastDrag.forEach(element => {
-                    element.classList.add(className);
-                    element.classList.remove('just-changed');
-                });
-            } else {
-                changedByLastDrag.forEach(element => {
-                    element.classList.remove('selected');
-                    element.classList.remove('just-changed');
-                });
-            }
+    addShelveAdditionDialogListener() {
+        this.shelfDialog.on('close', (isConfirmed) => {
+            this.handleTileAddition(isConfirmed);
         });
     }
 
@@ -45,6 +32,7 @@ class MeshController {
         });
     }
 
+    //#region Dragging
     addDragListener() {
         this.mesh.element.addEventListener('mousedown', (event) => {
             event.preventDefault();
@@ -70,7 +58,12 @@ class MeshController {
 
     stopShelvesSelection = () => {
         this.removeDragListener();
-        this.openAndHandleShelveDialog();
+
+        if (this.tileType === TileType.shelf) {
+            this.openShelveAdditionDialog();
+        } else {
+            this.handleTileAddition(true);
+        }
     }
 
     selectTiles(mouseEvent) {
@@ -99,11 +92,31 @@ class MeshController {
         this.mesh.element.removeEventListener('mousemove', this.startShelvesSelection);
         this.printEventTest('dragend');
     }
+    //#endregion
 
-    openAndHandleShelveDialog() {
+    openShelveAdditionDialog() {
         this.shelfDialog.open('Details', 'Pick a category for this shelf. The color is already defined.');
     }
 
+    handleTileAddition(shouldAdd) {
+        console.log('here');
+        const className = this.getClassNameForTileType(this.tileType)
+        const changedByLastDrag = mesh.element.querySelectorAll('.just-changed');
+
+        if (shouldAdd) {
+            changedByLastDrag.forEach(element => {
+                element.classList.add(className);
+                element.classList.remove('just-changed');
+            });
+        } else {
+            changedByLastDrag.forEach(element => {
+                element.classList.remove('selected');
+                element.classList.remove('just-changed');
+            });
+        }
+    }
+
+    //#region Helpers
     getClassNameForTileType = (tileType) => {
         switch (tileType) {
             case TileType.entry: {
@@ -121,16 +134,18 @@ class MeshController {
         }
     }
 
-    //#region Helpers
     printEventTest(message) {
         this.eventsTest.innerHTML = message;
     }
+
     printCursorTest(message) {
         this.cursorTest.innerHTML = message;
     }
+
     printOffsetTest(message) {
         this.offsetsTest.innerHTML = message;
     }
+
     printMeshHoverTest(message) {
         this.meshHoverTest.innerHTML = message;
     }
