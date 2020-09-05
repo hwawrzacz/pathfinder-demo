@@ -8,44 +8,54 @@ table.mesh {
 
 .mesh__row {
     display: flex;
-}
 
-.mesh__element {
-    width: 30px;
-    height: 30px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: 1px solid rgba(black, .87);
-    background-color: transparent;
-    border-radius: $border-radius;
-    font-size: 10px;
-    cursor: pointer;
-        
-    &.selected {
-        background: rgb(31,224,205);
-        background: linear-gradient(45deg, rgb(31, 179, 224) 0%, rgba(0,212,255,1) 100%);
+    &:not(:last-child) {
+        .mesh__element { 
+            border-bottom: none;
+        }
     }
 
-    &.entry {
-        @include tile-gradient(limegreen);
-    }
+    .mesh__element {
+        width: 30px;
+        height: 30px;
 
-    &.shelf {
-        @include tile-gradient(rgb(0, 183, 255));
-    }
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-    &.register {
-        @include tile-gradient(purple);
-    }
+        border: 1px solid rgba(black, .87);
+        background-color: transparent;
+        border-radius: $border-radius;
+        font-size: 10px;
+        cursor: pointer;
 
-    &.exit {
-        @include tile-gradient(darkred);
-    }
+        &:not(:last-child) {
+            border-right: none;
+        }
+            
+        &.selected {
+            background: rgb(31,224,205);
+            background: linear-gradient(45deg, rgb(31, 179, 224) 0%, rgba(0,212,255,1) 100%);
+        }
 
-    &:not(.selected):hover {
-        background-color: rgba(black, .15);
-    }        
+        &.entry {
+            @include tile-gradient(limegreen);
+        }
+
+        &.shelf {
+            @include tile-gradient(rgb(0, 183, 255));
+        }
+
+        &.register {
+            @include tile-gradient(purple);
+        }
+
+        &.exit {
+            @include tile-gradient(darkred);
+        }
+
+        &:not(.selected):hover {
+            background-color: rgba(black, .15);
+        }        
+    }
 }

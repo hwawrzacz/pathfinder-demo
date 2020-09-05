@@ -31,8 +31,13 @@
                 margin-bottom: 4px;
                 order: 0;
 
+                box-shadow: 0 0 0 0 transparent;
+                filter: saturate(0.8);
+                opacity: .3;
+
                 border-radius: $border-radius;
-                transition: 100ms;
+                cursor: pointer;
+                transition: 150ms;
                 
                 &.entry {
                     @include tile-active-color(limegreen);
@@ -55,15 +60,22 @@
                 display: none;
             }
 
-            input[type="radio"]:not(:checked) + .tile-controls__input--custom {
-                box-shadow: 0 0 0 0 transparent;
-                filter: saturate(0.8);
+            .tile-controls__text {
                 opacity: .3;
             }
-
+            
             input[type="radio"]:checked + .tile-controls__input--custom {
                 transform: scale(1.05);
                 filter: saturate(1);
+                opacity: 1;
+            }
+
+            input[type="radio"]:checked ~ .tile-controls__text {
+                opacity: 1;
+            }
+
+            &:hover > input[type="radio"] ~ .tile-controls__text {
+                opacity: 1;
             }
         }
     }

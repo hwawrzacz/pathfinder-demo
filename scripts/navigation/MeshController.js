@@ -2,14 +2,25 @@ class MeshController {
 
     constructor(mesh) {
         this.mesh = mesh;
-        this.addClickListener();
-        this.addDragListener();
         this.changedByLastDrag = [];
         this.tileType = TileType.entry;
         this.shelfDialog = new ShelfDialog();
-        this.shelfTypeController = new TileTypeController();
+        this.tileTypeController = new TileTypeController();
+        this.mouseEventParser = new MouseEventParser(mesh);
 
         // Add listeners
+        this.addDragListener();
+        this.addDialogListener();
+        this.addTileTypeChangeListener();
+
+        // Test fields
+        this.eventsTest = document.querySelector('.test__event');
+        this.cursorTest = document.querySelector('.test__cursor');
+        this.offsetsTest = document.querySelector('.test__offset');
+        this.meshHoverTest = document.querySelector('.test__mesh-hover');
+    }
+
+    addDialogListener() {
         this.shelfDialog.on('close', (value) => {
             const className = this.getClassNameForTileType(this.tileType)
             const changedByLastDrag = mesh.element.querySelectorAll('.just-changed');
@@ -26,27 +37,20 @@ class MeshController {
                 });
             }
         });
-
-        this.shelfTypeController.on(TileTypeControllerEvents.changed, (value) => {
-            this.tileType = value;
-        })
-
-        // Test fields
-        this.eventsTest = document.querySelector('.test__event');
-        this.cursorTest = document.querySelector('.test__cursor');
-        this.offsetsTest = document.querySelector('.test__offset');
-        this.meshHoverTest = document.querySelector('.test__mesh-hover');
     }
 
-    addClickListener() { }
+    addTileTypeChangeListener() {
+        this.tileTypeController.on(TileTypeControllerEvents.changed, (value) => {
+            this.tileType = value;
+        });
+    }
 
     addDragListener() {
         this.mesh.element.addEventListener('mousedown', (event) => {
             event.preventDefault();
             event.stopPropagation();
 
-
-            const relCursorPosition = this.getRelCursorPosition(event);
+            const relCursorPosition = this.mouseEventParser.getRelCursorPosition(event);
             this.toggleTile(relCursorPosition);
 
             this.mesh.element.addEventListener('mousemove', this.startShelvesSelection);
@@ -70,7 +74,8 @@ class MeshController {
     }
 
     selectTiles(mouseEvent) {
-        const relCursorPosition = this.getRelCursorPosition(mouseEvent);
+        const relCursorPosition = this.mouseEventParser.getRelCursorPosition(mouseEvent);
+        this.printCursorTest(`${relCursorPosition.x} | ${relCursorPosition.y}`);
 
         this.toggleTile(relCursorPosition);
         this.printCursorTest(`${relCursorPosition.x} | ${relCursorPosition.y}`);
@@ -114,26 +119,6 @@ class MeshController {
                 return 'exit'
             }
         }
-    }
-
-    getRelCursorPosition(mouseEvent) {
-        const cursorPosition = this.getCursorPosition(mouseEvent);
-        this.printCursorTest(`${cursorPosition.x} | ${cursorPosition.y}`);
-
-        const offsetTop = this.mesh.element.offsetTop;
-        const offsetLeft = this.mesh.element.offsetLeft;
-
-        return {
-            x: parseInt(cursorPosition.x - offsetLeft),
-            y: parseInt(cursorPosition.y - offsetTop)
-        };
-    }
-
-    getCursorPosition(mouseEvent) {
-        const mouseX = mouseEvent.pageX;
-        const mouseY = mouseEvent.pageY;
-
-        return { x: mouseX, y: mouseY };
     }
 
     //#region Helpers
