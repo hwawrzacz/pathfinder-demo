@@ -1,0 +1,15 @@
+@import 'variables';
+
+main {
+    position: absolute;
+    top: $header-height;
+    left: 0;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 32px 16px 16px;
+}

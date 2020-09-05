@@ -1,0 +1,32 @@
+@import 'variables';
+
+button {
+    min-width: 50px;
+    margin: 0 6px;
+    padding: 6px 12px;
+    
+    outline: none;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+
+    &:first-child {
+        margin-left: 0;
+    }
+
+    &:last-child {
+        margin-right: 0;
+    }
+
+    &.button{
+        &--primary {
+            background-color: $color-primary;  
+            color: $text-on-primary;  
+        }
+
+        &--accent {
+            background-color: $color-accent;
+            color: $text-on-accent;
+        }
+    }
+}

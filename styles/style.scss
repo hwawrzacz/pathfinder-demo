@@ -28,9 +28,5 @@
     }
 }
 
-main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
+@import 'header';
+@import 'main';
