@@ -1,6 +1,7 @@
-class MeshController {
+class MeshController extends EventEmitter {
 
     constructor(mesh) {
+        super();
         this.mesh = mesh;
         this.changedByLastDrag = [];
         this.tileType = TileType.entry;
@@ -8,7 +9,7 @@ class MeshController {
         this.shelfDialog = new ShelfDialog();
         this.tileTypeController = new TileTypeController();
         this.selectionModeController = new SelectionModeController();
-        this.mouseEventParser = new MouseEventParser(mesh);
+        this.mouseEventParser = new MouseEventParser(mesh.element);
 
         // Add listeners
         this.addDragListener();
@@ -25,7 +26,10 @@ class MeshController {
 
     addShelveAdditionDialogListener() {
         this.shelfDialog.on('close', (isConfirmed) => {
-            this.handleTileAddition(isConfirmed);
+            if (isConfirmed)
+                this.setSelectedTilesType();
+            else
+                this.cleanSelectedTilesType();
         });
     }
 
@@ -37,7 +41,6 @@ class MeshController {
 
     addTileSelectionModeChangeListener() {
         this.selectionModeController.on(ControllerEvents.selectionModeChanged, (value) => {
-            console.log(`selection mode: ${value}`);
             this.selectionMode = value;
         });
     }
@@ -49,7 +52,8 @@ class MeshController {
             event.stopPropagation();
 
             const relCursorPosition = this.mouseEventParser.getRelCursorPosition(event);
-            this.toggleTile(relCursorPosition);
+            const tileToChange = event.target
+            this.markTile(tileToChange);
 
             this.mesh.element.addEventListener('mousemove', this.startShelvesSelection);
             document.addEventListener('mouseup', this.stopShelvesSelection);
@@ -62,38 +66,43 @@ class MeshController {
         event.preventDefault();
         event.stopPropagation();
 
-        this.selectTiles(event);
+        const tileToChange = event.target;
+        this.markTile(tileToChange);
+
         this.printEventTest('drag');
     };
 
     stopShelvesSelection = () => {
         this.removeDragListener();
 
-        if (this.tileType === TileType.shelf) {
-            this.openShelveAdditionDialog();
-        } else {
-            this.handleTileAddition(true);
+        if (this.isDrawingMode()) {
+            if (this.tileType === TileType.shelf) {
+                this.openShelveAdditionDialog();
+            } else {
+                this.setSelectedTilesType();
+            }
         }
+        else {
+            this.cleanSelectedTilesType();
+        }
+
+        // TODO: Refresh model in Mesh object
+        this.changedByLastDrag = [];
+        this.emitDragEnd();
     }
 
-    selectTiles(mouseEvent) {
-        const relCursorPosition = this.mouseEventParser.getRelCursorPosition(mouseEvent);
-        this.printCursorTest(`${relCursorPosition.x} | ${relCursorPosition.y}`);
+    markTile(tileToChange) {
+        if (tileToChange) {
+            if (this.isDrawingMode()) {
+                tileToChange.classList.add('selected');
+            }
+            else {
+                tileToChange.classList.remove('selected');
+                this.removeAllTileTypes(tileToChange);
+            }
 
-        this.toggleTile(relCursorPosition);
-        this.printCursorTest(`${relCursorPosition.x} | ${relCursorPosition.y}`);
-    }
-
-    toggleTile(relCursorPosition) {
-        const tileClass = `element-${Math.floor(relCursorPosition.y / 30)}-${Math.floor(relCursorPosition.x / 30)}`;
-        const toggledElement = document.querySelector(`.${tileClass}:not(.just-changed)`);
-
-        if (toggledElement) {
-            toggledElement.classList.add('selected');
-            toggledElement.classList.add('just-changed');
-            this.changedByLastDrag.push(toggledElement);
-
-            console.log(`${tileClass} switched`);
+            tileToChange.classList.add('just-changed');
+            this.changedByLastDrag.push(tileToChange);
         }
     }
 
@@ -108,23 +117,33 @@ class MeshController {
         this.shelfDialog.open('Details', 'Pick a category for this shelf. The color is already defined.');
     }
 
-    handleTileAddition(shouldAdd) {
-        console.log('here');
+    setSelectedTilesType() {
         const className = this.getClassNameForTileType(this.tileType)
-        const changedByLastDrag = mesh.element.querySelectorAll('.just-changed');
 
-        if (shouldAdd) {
-            changedByLastDrag.forEach(element => {
-                element.classList.add(className);
-                element.classList.remove('just-changed');
-            });
-        } else {
-            changedByLastDrag.forEach(element => {
-                element.classList.remove('selected');
-                element.classList.remove('just-changed');
-            });
-        }
+        this.changedByLastDrag.forEach(element => {
+            element.classList.add(className);
+        });
     }
+
+    cleanSelectedTilesType() {
+        this.changedByLastDrag.forEach(element => {
+            element.classList.remove('selected');
+        });
+    }
+
+    removeAllTileTypes(tileToChange) {
+        const potentialClasses = Object.keys(TileType);
+        potentialClasses.forEach(className => {
+            tileToChange.classList.remove(className);
+        });
+    }
+
+    emitDragEnd() {
+        this.emit(ControllerEvents.dragEnd);
+    }
+
+    //#region Boolean functions
+    isDrawingMode = () => this.selectionMode === TileSelectionMode.draw;
 
     //#region Helpers
     getClassNameForTileType = (tileType) => {

@@ -13,6 +13,7 @@ const TileSelectionMode = Object.freeze({
 
 const ControllerEvents = Object.freeze({
     'typeChanged': 1,
-    'selectionModeChanged': 2
+    'selectionModeChanged': 2,
+    'dragEnd': 3
 });
 

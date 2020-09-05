@@ -1,8 +1,9 @@
 class Mesh {
     constructor(width, height) {
         this.element = document.querySelector('.mesh');
-        this.controller = new MeshController(this);
+        this.meshController = new MeshController(this);
         this.generateMesh(width, height);
+        this.addMeshControllerEventListeners();
     }
 
     generateMesh(width, height) {
@@ -24,6 +25,10 @@ class Mesh {
         console.log(`Mesh created in ${(timeElapsed / 100).toFixed(2)} second${timeElapsed > 1 ? 's' : ''}`);
     }
 
+    addMeshControllerEventListeners() {
+        this.meshController.on(ControllerEvents.dragEnd, this.refreshModel);
+    }
+
     createMeshRow = () => {
         return this.createDOMElement('tr', ['mesh__row']);
     }
@@ -40,5 +45,10 @@ class Mesh {
         });
 
         return element;
+    }
+
+    refreshModel = () => {
+        // TODO: Refresh model
+        console.log('Model shoud be refreshed');
     }
 }

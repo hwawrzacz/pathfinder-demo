@@ -1,13 +1,13 @@
 class MouseEventParser {
-    constructor(mesh) {
-        this.mesh = mesh
+    constructor(meshElement) {
+        this.meshElement = meshElement;
     }
 
     getRelCursorPosition(mouseEvent) {
         const cursorPosition = this.getCursorPosition(mouseEvent);
 
-        const offsetTop = this.mesh.element.offsetTop;
-        const offsetLeft = this.mesh.element.offsetLeft;
+        const offsetTop = this.meshElement.offsetTop;
+        const offsetLeft = this.meshElement.offsetLeft;
 
         return {
             x: parseInt(cursorPosition.x - offsetLeft),

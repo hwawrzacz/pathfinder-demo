@@ -13,7 +13,7 @@ class SelectionModeController extends EventEmitter {
     }
 
     handleSelectionModeChange = (event) => {
-        this.currentMode = event.target.value;
+        this.currentMode = TileSelectionMode[event.target.value];
         this.emitSelectionModeChange();
     }
 
