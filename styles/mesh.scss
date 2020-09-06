@@ -2,8 +2,53 @@
 @import 'mixins';
 
 // MESH
+.mesh__container {
+    position: relative;
+
+    button {
+        $darkColor: rgba(black, .87);
+        @include button--border(#fff, $darkColor, 1px, $darkColor);
+        position: absolute;
+        margin: 0;
+        padding: 0;
+
+        &:hover {
+            transition: $button-transition--short;
+        }
+    }
+
+    &__button--top {
+        top: 0;
+        left: $button--mesh-control;
+        width: calc(100% - 2* #{$button--mesh-control});
+        height: $button--mesh-control;
+    }
+
+    &__button--bottom {
+        bottom: 0;
+        left: $button--mesh-control;
+        width: calc(100% - 2* #{$button--mesh-control});
+        height: $button--mesh-control;
+    }
+
+    &__button--left {
+        top: $button--mesh-control;
+        left: 0;
+        bottom: $button--mesh-control;
+        width: $button--mesh-control;
+    }
+
+    &__button--right {
+        top: $button--mesh-control;
+        right: 0;
+        bottom: $button--mesh-control;
+        width: $button--mesh-control;
+    }
+}
+
 table.mesh {
     border-spacing: 0;
+    margin: calc(#{$button--mesh-control} + 4px);
 }
 
 .mesh__row {

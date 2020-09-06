@@ -1,3 +1,5 @@
+@import 'variables';
+
 // Tiles
 @mixin tile-gradient($color) {
     $lighter-color: lighten($color, 10%);
@@ -5,4 +7,46 @@
     $bg-gradient: linear-gradient(45deg, $darker-color 0%, $lighter-color 100%);
     background-color: $color;
     background: $bg-gradient;
+}
+
+// Buttons
+@mixin button--no-border($bgColor, $textColor) {
+    padding: 6px 12px;
+    
+    background-color: $bgColor;
+    color: $textColor;
+    outline: none;
+    border: none;
+    border-radius: $border-radius;
+    transition: $button-transition;
+    cursor: pointer;
+}
+
+@mixin button--no-border--light($bgColor, $textColor) {
+    @include button--no-border($bgColor, $textColor);
+
+    &:hover {
+        background-color: darken($bgColor, 5%);
+    }
+
+    &:active {
+        background-color: darken($bgColor, 15%);
+    }
+}
+
+@mixin button--no-border--dark($bgColor, $textColor) {
+    @include button--no-border($bgColor, $textColor);
+
+    &:hover {
+        background-color: lighten($bgColor, 5%);
+    }
+
+    &:active {
+        background-color: lighten($bgColor, 15%);
+    }
+}
+
+@mixin button--border($bgColor, $textColor, $borderWidth, $borderColor) {
+    @include button--no-border--light($bgColor, $textColor);
+    border: $borderWidth solid $borderColor;
 }

@@ -36,7 +36,7 @@
                 filter: saturate(0.8);
                 opacity: .3;
                 border-radius: $border-radius;
-                transition: $transition--button;
+                transition: $button-transition;
                 cursor: pointer;
                 
                 &.entry {
@@ -62,7 +62,7 @@
 
             .mesh-controls__text {
                 opacity: .3;
-                transition: $transition--button;
+                transition: $button-transition;
             }
             
             input[type="radio"]:checked + .mesh-controls__tile-type__input--custom {
@@ -100,7 +100,7 @@
             font-weight: bold;
             cursor: pointer;
 
-            transition: $transition--button;
+            transition: $button-transition;
         }
 
         input[type='radio'] {
