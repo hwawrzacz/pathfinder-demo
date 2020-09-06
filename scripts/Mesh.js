@@ -1,54 +1,177 @@
 class Mesh {
     constructor(width, height) {
         this.element = document.querySelector('.mesh');
-        this.meshController = new MeshController(this);
-        this.generateMesh(width, height);
-        this.addMeshControllerEventListeners();
+        this.changedByLastDrag = [];
+        this.tileType = TileType.entry;
+        this.selectionMode = TileSelectionMode.draw;
+        this.shelfDialog = new ShelfDialog();
+        this.tileTypeController = new TileTypeController();
+        this.structureController = new StructureController(this.element, width, height);
+        this.selectionModeController = new SelectionModeController();
+        this.mouseEventParser = new MouseEventParser(this.element);
+
+        // Add listeners
+        this.addDragListener();
+        this.addShelveAdditionDialogListener();
+        this.addTileTypeChangeListener();
+        this.addTileSelectionModeChangeListener();
+
+        // Test fields
+        this.eventsTest = document.querySelector('.test__event');
+        this.cursorTest = document.querySelector('.test__cursor');
+        this.offsetsTest = document.querySelector('.test__offset');
+        this.meshHoverTest = document.querySelector('.test__mesh-hover');
     }
 
-    generateMesh(width, height) {
-        const startTime = Date.now();
+    addShelveAdditionDialogListener() {
+        this.shelfDialog.on('close', (isConfirmed) => {
+            if (isConfirmed)
+                this.setSelectedTilesType();
+            else
+                this.cleanSelectedTilesType();
+        });
+    }
 
-        for (let row = 0; row < width; row++) {
-            const rowEl = this.createMeshRow();
-            this.element.appendChild(rowEl);
+    addTileTypeChangeListener() {
+        this.tileTypeController.on(ControllerEvents.typeChanged, (value) => {
+            this.tileType = value;
+        });
+    }
 
-            for (let col = 0; col < height; col++) {
-                const tile = this.createMeshElement();
+    addTileSelectionModeChangeListener() {
+        this.selectionModeController.on(ControllerEvents.selectionModeChanged, (value) => {
+            this.selectionMode = value;
+        });
+    }
 
-                tile.classList.add(`element-${row}-${col}`);
-                rowEl.appendChild(tile);
+    //#region Dragging
+    addDragListener() {
+        this.element.addEventListener('mousedown', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const relCursorPosition = this.mouseEventParser.getRelCursorPosition(event);
+            const tileToChange = event.target
+            this.markTile(tileToChange);
+
+            this.element.addEventListener('mousemove', this.startShelvesSelection);
+            document.addEventListener('mouseup', this.stopShelvesSelection);
+
+            this.printEventTest('mousedown');
+        });
+    }
+
+    startShelvesSelection = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const tileToChange = event.target;
+        this.markTile(tileToChange);
+
+        this.printEventTest('drag');
+    };
+
+    stopShelvesSelection = () => {
+        this.removeDragListener();
+
+        if (this.isDrawingMode()) {
+            if (this.tileType === TileType.shelf) {
+                this.openShelveAdditionDialog();
+            } else {
+                this.setSelectedTilesType();
             }
         }
+        else {
+            this.cleanSelectedTilesType();
+        }
 
-        const timeElapsed = Date.now() - startTime;
-        console.log(`Mesh created in ${(timeElapsed / 100).toFixed(2)} second${timeElapsed > 1 ? 's' : ''}`);
+        // TODO: Refresh model in Mesh object
+        this.changedByLastDrag = [];
+        this.structureController.refreshModel();
     }
 
-    addMeshControllerEventListeners() {
-        this.meshController.on(ControllerEvents.dragEnd, this.refreshModel);
+    markTile(tileToChange) {
+        if (tileToChange) {
+            if (this.isDrawingMode()) {
+                tileToChange.classList.add('selected');
+            }
+            else {
+                tileToChange.classList.remove('selected');
+                this.removeAllTileTypes(tileToChange);
+            }
+
+            tileToChange.classList.add('just-changed');
+            this.changedByLastDrag.push(tileToChange);
+        }
     }
 
-    createMeshRow = () => {
-        return this.createDOMElement('tr', ['mesh__row']);
+    removeDragListener = () => {
+        document.removeEventListener('mouseup', this.stopShelvesSelection);
+        this.element.removeEventListener('mousemove', this.startShelvesSelection);
+        this.printEventTest('dragend');
+    }
+    //#endregion
+
+    openShelveAdditionDialog() {
+        this.shelfDialog.open('Details', 'Pick a category for this shelf. The color is already defined.');
     }
 
-    createMeshElement = () => {
-        return this.createDOMElement('td', ['mesh__element']);
-    }
+    setSelectedTilesType() {
+        const className = this.getClassNameForTileType(this.tileType)
 
-    createDOMElement = (name, classList) => {
-        const element = document.createElement(name);
-
-        classList.forEach(className => {
+        this.changedByLastDrag.forEach(element => {
             element.classList.add(className);
         });
-
-        return element;
     }
 
-    refreshModel = () => {
-        // TODO: Refresh model
-        console.log('Model shoud be refreshed');
+    cleanSelectedTilesType() {
+        this.changedByLastDrag.forEach(element => {
+            element.classList.remove('selected');
+        });
     }
+
+    removeAllTileTypes(tileToChange) {
+        const potentialClasses = Object.keys(TileType);
+        potentialClasses.forEach(className => {
+            tileToChange.classList.remove(className);
+        });
+    }
+
+    //#region Boolean functions
+    isDrawingMode = () => this.selectionMode === TileSelectionMode.draw;
+
+    //#region Helpers
+    getClassNameForTileType = (tileType) => {
+        switch (tileType) {
+            case TileType.entry: {
+                return 'entry'
+            }
+            case TileType.shelf: {
+                return 'shelf'
+            }
+            case TileType.register: {
+                return 'register'
+            }
+            case TileType.exit: {
+                return 'exit'
+            }
+        }
+    }
+
+    printEventTest(message) {
+        this.eventsTest.innerHTML = message;
+    }
+
+    printCursorTest(message) {
+        this.cursorTest.innerHTML = message;
+    }
+
+    printOffsetTest(message) {
+        this.offsetsTest.innerHTML = message;
+    }
+
+    printMeshHoverTest(message) {
+        this.meshHoverTest.innerHTML = message;
+    }
+    //#endregion
 }

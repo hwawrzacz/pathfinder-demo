@@ -1,1 +1,1 @@
-const mesh = new Mesh(20, 20);
+const mesh = new Mesh(10, 10);

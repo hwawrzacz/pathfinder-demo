@@ -63,10 +63,10 @@
                     </label>
             </nav>
             <div class="mesh__container">
-                <button class="mesh__container__button--top">+</button>
-                <button class="mesh__container__button--bottom">+</button>
-                <button class="mesh__container__button--left">+</button>
-                <button class="mesh__container__button--right">+</button>
+                <button class="mesh__container__button--top" id="add-row-above">+</button>
+                <button class="mesh__container__button--left" id="add-col-before">+</button>
+                <button class="mesh__container__button--right" id="add-col-after">+</button>
+                <button class="mesh__container__button--bottom" id="add-row-below">+</button>
                 <table class="mesh"></table>
             </div>
         </main>
@@ -82,10 +82,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/EventEmitter/5.2.8/EventEmitter.js"></script>
     <script src="./scripts/enums/enums.js"></script>
     <script src="./scripts/dialogs/ShelfDialog.js"></script>
+    <script src="./scripts/navigation/StructureController.js"></script>
     <script src="./scripts/navigation/SelectionModeController.js"></script>
     <script src="./scripts/navigation/MouseEventParser.js"></script>
     <script src="./scripts/navigation/TileTypeController.js"></script>
-    <script src="./scripts/navigation/MeshController.js"></script>
     <script src="./scripts/Mesh.js"></script>
     <script src="./scripts/index.js"></script>
 </body>

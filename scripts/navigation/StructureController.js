@@ -1,0 +1,79 @@
+class StructureController {
+    constructor(meshElement, width, height) {
+        this.width = width;
+        this.height = height;
+        this.meshElement = meshElement
+        this.generateMesh(width, height);
+        this.addButtonsListeners();
+    }
+
+    addButtonsListeners() {
+        const buttonTop = document.querySelector('.mesh__container__button--top');
+        const buttonLeft = document.querySelector('.mesh__container__button--left');
+        const buttonRight = document.querySelector('.mesh__container__button--right');
+        const buttonBottom = document.querySelector('.mesh__container__button--bottom');
+
+        buttonTop.addEventListener('click', this.insertRowAbove);
+        buttonLeft.addEventListener('click', this.insertColumnBefore);
+        buttonRight.addEventListener('click', this.insertColumnAfter);
+        buttonBottom.addEventListener('click', this.insertRowBelow);
+    }
+
+    generateMesh(width, height) {
+        const startTime = Date.now();
+
+        for (let row = 0; row < width; row++) {
+            const rowEl = this.createMeshRow();
+            this.meshElement.appendChild(rowEl);
+
+            for (let col = 0; col < height; col++) {
+                const tile = this.createMeshElement();
+
+                tile.classList.add(`element-${row}-${col}`);
+                rowEl.appendChild(tile);
+            }
+        }
+
+        const timeElapsed = Date.now() - startTime;
+        console.log(`Mesh created in ${(timeElapsed / 100).toFixed(2)} second${timeElapsed > 1 ? 's' : ''}`);
+    }
+
+    createMeshRow = () => {
+        return this.createDOMElement('tr', ['mesh__row']);
+    }
+
+    createMeshElement = () => {
+        return this.createDOMElement('td', ['mesh__element']);
+    }
+
+    createDOMElement = (name, classList) => {
+        const element = document.createElement(name);
+
+        classList.forEach(className => {
+            element.classList.add(className);
+        });
+
+        return element;
+    }
+
+    refreshModel = () => {
+        // TODO: Refresh model
+        console.log('Model shoud be refreshed');
+    }
+
+    insertRowAbove = () => {
+        console.log('insertRowAbove');
+    }
+
+    insertColumnBefore = () => {
+        console.log('insertColumnBefore');
+    }
+
+    insertColumnAfter = () => {
+        console.log('insertColumnAfter');
+    }
+
+    insertRowBelow = () => {
+        console.log('insertRowBelow');
+    }
+}
