@@ -61,6 +61,7 @@ class StructureController {
         console.log('Model shoud be refreshed');
     }
 
+    //#region Inserting cols/rows
     insertRowAbove = () => {
         const firstRow = this.meshElement.querySelector('tr:first-child');
         const newRow = this.createMeshRow();
@@ -71,14 +72,7 @@ class StructureController {
         }
 
         firstRow.before(newRow);
-    }
-
-    insertColumnBefore = () => {
-        console.log('insertColumnBefore');
-    }
-
-    insertColumnAfter = () => {
-        console.log('insertColumnAfter');
+        this.height++;
     }
 
     insertRowBelow = () => {
@@ -90,5 +84,30 @@ class StructureController {
         }
 
         this.meshElement.appendChild(newRow);
+        this.height++;
     }
+
+    insertColumnBefore = () => {
+        const allRows = this.meshElement.querySelectorAll('tr');
+
+        allRows.forEach(row => {
+            const newElement = this.createMeshElement();
+            const firstElement = row.querySelector('td:first-child');
+            firstElement.before(newElement);
+        });
+
+        this.width++;
+    }
+
+    insertColumnAfter = () => {
+        const allRows = this.meshElement.querySelectorAll('tr');
+
+        allRows.forEach(row => {
+            const newElement = this.createMeshElement();
+            row.appendChild(newElement);
+        });
+
+        this.width++;
+    }
+    //#endregion
 }
