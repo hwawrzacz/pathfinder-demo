@@ -1,9 +1,9 @@
-class StructureController {
+class MeshController {
     constructor(meshElement, width, height) {
         this.width = width;
         this.height = height;
         this.meshElement = meshElement;
-        this.meshModel = new MeshModel(meshElement);
+        this.meshModel = new MeshStructure(meshElement);
         this.generateMesh(width, height);
         this.addButtonsListeners();
     }
@@ -72,7 +72,7 @@ class StructureController {
         }
 
         firstRow.before(newRow);
-        this.height++;
+        this.commitRowInsertion();
     }
 
     insertRowBelow = () => {
@@ -84,7 +84,7 @@ class StructureController {
         }
 
         this.meshElement.appendChild(newRow);
-        this.height++;
+        this.commitRowInsertion();
     }
 
     insertColumnBefore = () => {
@@ -107,7 +107,17 @@ class StructureController {
             row.appendChild(newElement);
         });
 
+        this.commitColInsertion();
+    }
+
+    commitRowInsertion() {
+        this.height++;
+        this.refreshModel();
+    }
+
+    commitColInsertion() {
         this.width++;
+        this.refreshModel();
     }
     //#endregion
 }

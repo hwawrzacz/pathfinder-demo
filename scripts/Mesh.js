@@ -6,13 +6,13 @@ class Mesh {
         this.selectionMode = TileSelectionMode.draw;
         this.shelfDialog = new ShelfDialog();
         this.tileTypeController = new TileTypeController();
-        this.structureController = new StructureController(this.element, width, height);
+        this.structureController = new MeshController(this.element, width, height);
         this.selectionModeController = new SelectionModeController();
         this.mouseEventParser = new MouseEventParser(this.element);
 
         // Add listeners
         this.addDragListener();
-        this.addShelveAdditionDialogListener();
+        this.addShelfAdditionDialogListener();
         this.addTileTypeChangeListener();
         this.addTileSelectionModeChangeListener();
 
@@ -23,8 +23,9 @@ class Mesh {
         this.meshHoverTest = document.querySelector('.test__mesh-hover');
     }
 
-    addShelveAdditionDialogListener() {
+    addShelfAdditionDialogListener() {
         this.shelfDialog.on('close', (isConfirmed) => {
+            console.log(`closed with: ${isConfirmed}`);
             if (isConfirmed)
                 this.setSelectedTilesType();
             else
@@ -76,7 +77,7 @@ class Mesh {
 
         if (this.isDrawingMode()) {
             if (this.tileType === TileType.shelf) {
-                this.openShelveAdditionDialog();
+                this.openShelfAdditionDialog();
             } else {
                 this.setSelectedTilesType();
             }
@@ -112,14 +113,14 @@ class Mesh {
     }
     //#endregion
 
-    openShelveAdditionDialog() {
+    openShelfAdditionDialog() {
         this.shelfDialog.open('Details', 'Pick a category for this shelf. The color is already defined.');
     }
 
-    setSelectedTilesType() {
+    setSelectedTilesType(category = null) {
         const className = this.getClassNameForTileType(this.tileType)
-
         this.changedByLastDrag.forEach(element => {
+            // console.log(`${className} is added`);
             element.classList.add(className);
         });
     }
