@@ -2,7 +2,8 @@ class StructureController {
     constructor(meshElement, width, height) {
         this.width = width;
         this.height = height;
-        this.meshElement = meshElement
+        this.meshElement = meshElement;
+        this.meshModel = new MeshModel(meshElement);
         this.generateMesh(width, height);
         this.addButtonsListeners();
     }
@@ -57,8 +58,7 @@ class StructureController {
     }
 
     refreshModel = () => {
-        // TODO: Refresh model
-        console.log('Model shoud be refreshed');
+        this.meshModel.refreshModel();
     }
 
     //#region Inserting cols/rows

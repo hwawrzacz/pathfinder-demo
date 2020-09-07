@@ -94,13 +94,13 @@ class Mesh {
         if (tileToChange) {
             if (this.isDrawingMode()) {
                 tileToChange.classList.add('selected');
+                // tileToChange.classList.add('just-changed');
             }
             else {
                 tileToChange.classList.remove('selected');
                 this.removeAllTileTypes(tileToChange);
             }
 
-            tileToChange.classList.add('just-changed');
             this.changedByLastDrag.push(tileToChange);
         }
     }
