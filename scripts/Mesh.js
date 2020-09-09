@@ -6,15 +6,19 @@ class Mesh {
         this.selectionMode = TileSelectionMode.draw;
         this.shelfDialog = new ShelfDialog();
         this.tileTypeController = new TileTypeController();
-        this.structureController = new MeshController(this.element, width, height);
+        this.meshController = new MeshController(this.element, width, height);
+        this.meshStructure = new MeshStructure(this.element);
         this.selectionModeController = new SelectionModeController();
         this.mouseEventParser = new MouseEventParser(this.element);
 
         // Add listeners
         this.addDragListener();
         this.addShelfAdditionDialogListener();
+        this.addViewChangeListener();
         this.addTileTypeChangeListener();
         this.addTileSelectionModeChangeListener();
+        this.addExportListener();
+        this.refreshModel();
 
         // Test fields
         this.eventsTest = document.querySelector('.test__event');
@@ -24,7 +28,7 @@ class Mesh {
     }
 
     addShelfAdditionDialogListener() {
-        this.shelfDialog.on('close', (category) => {
+        this.shelfDialog.on(ControllerEvents.closed, (category) => {
             if (category) {
                 this.setSelectedTilesType(category);
             } else {
@@ -32,6 +36,12 @@ class Mesh {
             }
             this.refreshModel();
         });
+    }
+
+    addViewChangeListener() {
+        this.meshController.on(ControllerEvents.meshViewChanged, () => {
+            this.refreshModel();
+        })
     }
 
     addTileTypeChangeListener() {
@@ -46,13 +56,20 @@ class Mesh {
         });
     }
 
+    addExportListener() {
+        const exportButton = document.querySelector('button[name="export-json"]');
+        exportButton.addEventListener('click', () => {
+            console.log(this.meshStructure.exportAsJson());
+        });
+
+    }
+
     //#region Dragging
     addDragListener() {
         this.element.addEventListener('mousedown', (event) => {
             event.preventDefault();
             event.stopPropagation();
 
-            const relCursorPosition = this.mouseEventParser.getRelCursorPosition(event);
             const tileToChange = event.target
             this.markTile(tileToChange);
 
@@ -138,7 +155,7 @@ class Mesh {
 
     refreshModel() {
         this.changedByLastDrag = [];
-        this.structureController.refreshModel();
+        this.meshStructure.refreshModel();
     }
 
     //#region Boolean functions

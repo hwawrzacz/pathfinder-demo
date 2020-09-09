@@ -1,7 +1,6 @@
 class MeshStructure {
     constructor(meshElement) {
         this.meshElement = meshElement;
-        this.refreshModel();
     }
 
     refreshModel() {
@@ -15,8 +14,6 @@ class MeshStructure {
             tiles.forEach(element => this.checkTile(element, rowIndex));
             rowIndex++;
         });
-
-        console.table(this.model);
     }
 
     checkTile(element, rowIndex) {
@@ -26,13 +23,40 @@ class MeshStructure {
 
             if (type.includes('shelf')) {
                 const category = type.replace('shelf--', '');
-                this.model[rowIndex].push(new Tile(element, 'shelf', category).toString());
+                this.model[rowIndex].push(new Tile(element, 'shelf', category));
             }
             else {
-                this.model[rowIndex].push(new Tile(element, type).toString());
+                this.model[rowIndex].push(new Tile(element, type));
             }
         } else {
             this.model[rowIndex].push(' ');
         }
+    }
+
+    exportAsJson() {
+        // return JSON.stringify(this.model);
+        const exported = [];
+        let currentRowIndex = 0;
+        this.model.forEach(row => {
+            exported.push([]);
+
+            row.forEach(tile => {
+                if (tile.hasOwnProperty('type')) {
+                    if (tile.type === 'entry') {
+                        exported[currentRowIndex].push('A');
+                    } else if (tile.type === 'exit') {
+                        exported[currentRowIndex].push('B');
+                    } else {
+                        exported[currentRowIndex].push(tile.type.substr(0, 1).toUpperCase());
+                    }
+                    console.log(tile.type);
+                } else {
+                    exported[currentRowIndex].push(' ');
+                }
+            });
+            currentRowIndex++;
+        });
+
+        return JSON.stringify(exported);
     }
 }

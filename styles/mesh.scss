@@ -4,6 +4,7 @@
 // MESH
 .mesh__container {
     position: relative;
+    margin-bottom: 24px;
 
     button {
         $darkColor: rgba(black, .87);
@@ -103,4 +104,9 @@ table.mesh {
             background-color: rgba(black, .15);
         }        
     }
+}
+
+button[name='export-json'] {
+    font-size: 18px;
+    font-weight: bold;
 }

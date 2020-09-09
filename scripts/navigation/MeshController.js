@@ -1,9 +1,9 @@
-class MeshController {
+class MeshController extends EventEmitter {
     constructor(meshElement, width, height) {
+        super()
         this.width = width;
         this.height = height;
         this.meshElement = meshElement;
-        this.meshModel = new MeshStructure(meshElement);
         this.generateMesh(width, height);
         this.addButtonsListeners();
     }
@@ -57,10 +57,6 @@ class MeshController {
         return element;
     }
 
-    refreshModel = () => {
-        this.meshModel.refreshModel();
-    }
-
     //#region Inserting cols/rows
     insertRowAbove = () => {
         const firstRow = this.meshElement.querySelector('tr:first-child');
@@ -96,7 +92,7 @@ class MeshController {
             firstElement.before(newElement);
         });
 
-        this.width++;
+        this.commitColInsertion();
     }
 
     insertColumnAfter = () => {
@@ -112,12 +108,16 @@ class MeshController {
 
     commitRowInsertion() {
         this.height++;
-        this.refreshModel();
+        this.emitMeshViewChange();
     }
 
     commitColInsertion() {
         this.width++;
-        this.refreshModel();
+        this.emitMeshViewChange();
+    }
+
+    emitMeshViewChange() {
+        this.emit(ControllerEvents.meshViewChanged);
     }
     //#endregion
 }
