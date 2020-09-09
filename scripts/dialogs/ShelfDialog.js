@@ -51,7 +51,7 @@ class ShelfDialog extends EventEmitter {
 
     close = (returnValue = null) => {
         this.element.remove();
-        this.emit('close', returnValue);
+        this.emit(ControllerEvents.closed, returnValue);
     }
     //#endregion
 
