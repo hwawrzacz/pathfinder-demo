@@ -24,12 +24,13 @@ class Mesh {
     }
 
     addShelfAdditionDialogListener() {
-        this.shelfDialog.on('close', (isConfirmed) => {
-            console.log(`closed with: ${isConfirmed}`);
-            if (isConfirmed)
-                this.setSelectedTilesType();
-            else
+        this.shelfDialog.on('close', (category) => {
+            if (category) {
+                this.setSelectedTilesType(category);
+            } else {
                 this.cleanSelectedTilesType();
+            }
+            this.refreshModel();
         });
     }
 
@@ -80,15 +81,13 @@ class Mesh {
                 this.openShelfAdditionDialog();
             } else {
                 this.setSelectedTilesType();
+                this.refreshModel();
             }
         }
         else {
             this.cleanSelectedTilesType();
+            this.refreshModel();
         }
-
-        // TODO: Refresh model in Mesh object
-        this.changedByLastDrag = [];
-        this.structureController.refreshModel();
     }
 
     markTile(tileToChange) {
@@ -118,9 +117,8 @@ class Mesh {
     }
 
     setSelectedTilesType(category = null) {
-        const className = this.getClassNameForTileType(this.tileType)
+        const className = `${this.getClassNameForTileType(this.tileType)}${category ? `--${category}` : ''}`;
         this.changedByLastDrag.forEach(element => {
-            // console.log(`${className} is added`);
             element.classList.add(className);
         });
     }
@@ -136,6 +134,11 @@ class Mesh {
         potentialClasses.forEach(className => {
             tileToChange.classList.remove(className);
         });
+    }
+
+    refreshModel() {
+        this.changedByLastDrag = [];
+        this.structureController.refreshModel();
     }
 
     //#region Boolean functions

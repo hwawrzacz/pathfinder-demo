@@ -16,7 +16,7 @@ class MeshStructure {
             rowIndex++;
         });
 
-        console.log(this.model);
+        console.table(this.model);
     }
 
     checkTile(element, rowIndex) {
@@ -26,11 +26,9 @@ class MeshStructure {
 
             if (type.includes('shelf')) {
                 const category = type.replace('shelf--', '');
-                console.log(category);
-                this.model[rowIndex].push(new Tile(element, category).toString());
+                this.model[rowIndex].push(new Tile(element, 'shelf', category).toString());
             }
             else {
-                console.log(type);
                 this.model[rowIndex].push(new Tile(element, type).toString());
             }
         } else {
