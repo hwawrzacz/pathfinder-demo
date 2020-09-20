@@ -74,21 +74,22 @@ table.mesh {
         border-radius: $border-radius;
         font-size: 10px;
         cursor: pointer;
+        transition: $button-transition;
 
         &:not(:last-child) {
             border-right: none;
         }
             
         &.selected {
-            background: rgb(31,224,205);
-            background: linear-gradient(45deg, rgb(31, 179, 224) 0%, rgba(0,212,255,1) 100%);
+            background: rgb(155, 250, 198);
+            background: linear-gradient(45deg, rgba(black, 0.30) 0%, rgba(black, 0.10) 100%);
         }
 
         &.entry {
             @include tile-gradient(limegreen);
         }
 
-        &.shelf {
+        &[class*="shelf"] {
             @include tile-gradient(rgb(0, 183, 255));
         }
 
