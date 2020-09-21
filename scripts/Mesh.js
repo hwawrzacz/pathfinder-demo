@@ -130,7 +130,7 @@ class Mesh {
     //#endregion
 
     openShelfAdditionDialog() {
-        this.shelfDialog.open('Details', 'Pick a category for this shelf. The color is already defined.');
+        this.shelfDialog.open('Szczegóły', 'Wybierz kategorię regału.');
     }
 
     setSelectedTilesType(category = null) {

@@ -86,19 +86,57 @@ table.mesh {
         }
 
         &.entry {
+            border: 1px dashed white;
             @include tile-gradient(limegreen);
+        }
+
+        &.register {
+            border: 1px dashed white;
+            @include tile-gradient(purple);
+        }
+
+        &.exit {
+            border: 1px dashed white;
+            @include tile-gradient(darkred);
         }
 
         &[class*="shelf"] {
             @include tile-gradient(rgb(0, 183, 255));
         }
 
-        &.register {
-            @include tile-gradient(purple);
-        }
+        &.shelf {
+            &--bread {
+                @include tile-gradient(rgb(145, 130, 64));
+            }
 
-        &.exit {
-            @include tile-gradient(darkred);
+            &--vegetables {
+                @include tile-gradient(rgb(211, 255, 129));
+            }
+
+            &--fruits {
+                @include tile-gradient(rgb(245, 255, 112));
+            }
+
+            &--meat {
+                @include tile-gradient(rgb(134, 92, 92));
+            }
+
+            &--dairy {
+                @include tile-gradient(rgb(32, 70, 85));
+            }
+
+            &--sweets {
+                @include tile-gradient(rgb(68, 243, 255));
+            }
+
+            &--chemicals {
+                @include tile-gradient(rgb(113, 50, 150));
+            }
+
+            &--textils {
+                @include tile-gradient(rgb(93, 115, 124));
+            }
+
         }
 
         &:not(.selected):hover {

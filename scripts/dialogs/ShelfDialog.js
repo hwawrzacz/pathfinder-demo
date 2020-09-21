@@ -63,11 +63,14 @@ class ShelfDialog extends EventEmitter {
                 <div class="dialog__content">
                     <p class="dialog__content__message"></p>
                     <select>
-                        <option value="vegetables">Warzywa</option>
                         <option value="bread">Pieczywo</option>
+                        <option value="vegetables">Warzywa</option>
+                        <option value="fruits">Owoce</option>
                         <option value="meat">Mięso</option>
+                        <option value="dairy">Nabiał</option>
                         <option value="sweets">Słodycze</option>
                         <option value="chemicals">Chemia</option>
+                        <option value="textils">Tekstylia</option>
                     </select>
                 </div>
                 <div class="dialog__actions">
