@@ -25,14 +25,12 @@ class MeshController extends EventEmitter {
 
         for (let row = 0; row < width; row++) {
             const rowEl = this.createMeshRow();
-            this.meshElement.appendChild(rowEl);
 
             for (let col = 0; col < height; col++) {
-                const tile = this.createMeshElement();
-
-                tile.classList.add(`element-${row}-${col}`);
-                rowEl.appendChild(tile);
+                rowEl.appendChild(this.createMeshElement());
             }
+
+            this.meshElement.appendChild(rowEl);
         }
 
         const timeElapsed = Date.now() - startTime;

@@ -108,14 +108,12 @@ class Mesh {
     }
 
     markTile(tileToChange) {
-        if (tileToChange) {
+        if (tileToChange && [...tileToChange.classList].includes('mesh__element')) {
             if (this.isDrawingMode()) {
                 tileToChange.classList.add('selected');
-                // tileToChange.classList.add('just-changed');
-            }
-            else {
+            } else {
                 tileToChange.classList.remove('selected');
-                this.removeAllTileTypes(tileToChange);
+                this.clearTileType(tileToChange);
             }
 
             this.changedByLastDrag.push(tileToChange);
@@ -146,11 +144,8 @@ class Mesh {
         });
     }
 
-    removeAllTileTypes(tileToChange) {
-        const potentialClasses = Object.keys(TileType);
-        potentialClasses.forEach(className => {
-            tileToChange.classList.remove(className);
-        });
+    clearTileType(tileToChange) {
+        tileToChange.classList = ['mesh__element']
     }
 
     refreshModel() {
